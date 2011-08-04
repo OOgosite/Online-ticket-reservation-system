@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 This is readme
+=======
+Online Ticket Reservation System (OTRS)
+
+เป็นระบบจองตั๋วออนไลน์ผ่านหน้าเว็บโดยใช้ภาษา Go ในการพัฒนาเป็นหลัก
+>>>>>>> ea305c9169b8757582d05307c6aa200c04ead1e6
