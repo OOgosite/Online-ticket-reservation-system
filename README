@@ -4,6 +4,7 @@ This is readme
 Online Ticket Reservation System (OTRS)
 
 เป็นระบบจองตั๋วออนไลน์ผ่านหน้าเว็บโดยใช้ภาษา Go ในการพัฒนาเป็นหลัก และใช้งานร่วมกับ Google App Engine
+host ที่ใช้ในการทดสอบระบบ http://oogositecode.appspot.com
 
 *หมายเหตุ : Code ที่ใช้บน App Engine จะอยู่ใน src/myapp
 
