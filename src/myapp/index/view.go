@@ -1,62 +1,33 @@
 package index
 
 import (
-	"fmt"
 	"http"
 	"appengine"
 	"appengine/datastore"
-	"time"
+	"template"
 )
 
-type Member struct {
-    Usern  string
-    Name string
-    Passwd string
-    Repasswd string
-    Phone string
-    Email string
-    Study string
-    Address string
-    Date    datastore.Time
-}
 
 func init() {
-	http.HandleFunc("/signin", signin)
-	http.HandleFunc("/register",register)
-
+	http.HandleFunc("/view",view)
 }
 
-func signin(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, signIn)
-}
-
-func register(w http.ResponseWriter, r *http.Request) {
+func view(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	g := Member{
-        Usern: r.FormValue("usern"),
-        Name: r.FormValue("name"),
-        Passwd: r.FormValue("passwd"),
-        Repasswd: r.FormValue("repasswd"),
-        Phone: r.FormValue("phone"),
-        Email: r.FormValue("email"),
-        Study: r.FormValue("study"),
-        Address: r.FormValue("address"),
-        Date:    datastore.SecondsToTime(time.Seconds()),
-		}
-	
-	if g.Passwd == g.Repasswd && g.Usern != "" && g.Name != "" && g.Phone != "" && g.Email != "" {
-		datastore.Put(c, datastore.NewIncompleteKey("Member"), &g)
-	} else {		
-		http.Redirect(w, r, "/signin", http.StatusFound)
-	}
-	http.Redirect(w, r, "/view", http.StatusFound)
+    q := datastore.NewQuery("Member").Order("-Date").Limit(10)
+    members := make([]Member, 0, 10)
+    q.GetAll(c, &members)
+    viewTemplate.Execute(w, members)
 }
 
-const signIn = `<!DOCTYPE HTML>
+
+var viewTemplate = template.MustParse(viewTemplateHTML, nil)
+
+const viewTemplateHTML = `<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		<title>สมัครสมาชิก</title>
+		<title>รายชื่อสมาชิก</title>
 		<meta content="chatchai" name="author">
 		<meta content="ระบบจองตั๋วรถออนไลน์ มหาวิทยาลัยเทคโนโลยีสุรนารี"name="description">
 	</head>
@@ -89,113 +60,17 @@ const signIn = `<!DOCTYPE HTML>
 				<img style="width: 200px; height: 30px;" alt="" src="images/login.jpg"><br>
 				</td>
 				<td colspan="1" rowspan="19" style="vertical-align: top; width: 849px; text-align: center;"><br><br>
-				<center><span style="color: rgb(0, 0, 153); font-weight: bold;">สมัครสมาชิกระบบจองตั๋วรถออนไลน์<br>
+				<center><span style="color: rgb(0, 0, 153); font-weight: bold;">รายชื่อสมาชิกระบบจองตั๋วรถออนไลน์<br>
 				<br>
 				</span>
-				<form action="/register" method="post">
-				<table style="text-align: left; width: 500px; height: 59px;" border="0" cellpadding="0" cellspacing="0">
-				<tbody>
-				<tr align="left">
-					<td colspan="2" rowspan="1" style="vertical-align: top;">กรุณากรอกข้อมูลที่เป็นจริง และครบถ้วน<br><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">ชื่อผู้ใช้:<br>
-					</td>
-					<td style="vertical-align: top;"><input name="usern" size="15"><span style="color: rgb(102, 102, 102);"> ใช้รหัสนักศึกษา เช่นB5123456</span>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">ชื่อ - สกุล: </td>
-					<td style="vertical-align: top;"><input maxlength="250" size="30" name="name"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">รหัสผ่าน: <br>
-					</td>
-					<td style="vertical-align: top;"><input size="15" name="passwd" type="password"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">ยืนยันรหัสผ่าน: <br>
-					</td>
-					<td style="vertical-align: top;"><input size="15" name="repasswd" type="password"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">เบอร์โทรศัพท์: <br>
-					</td>
-					<td style="vertical-align: top;"><input maxlength="50" size="15" name="phone"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">อีเมลล์: <br>
-					</td>
-					<td style="vertical-align: top;"><input maxlength="100" size="20" name="email"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">สาขาวิชา: <br>
-					</td>
-					<td style="vertical-align: top;">
-						<select name="study">
-						<option value="">-เลือกสาขาวิชาที่เรียน-</option>
-						<option>สำนักวิชาวิทยาศาสตร์</option>
-						<option>สำนักวิชาพยาบาลศาสตร์</option>
-						<option>เทคโนโลยีสารสนเทศ</option>
-						<option>เทคโนโลยีการจัดการ</option>
-						<option>เทคโนโลยีการผลิตพืช</option>
-						<option>เทคโนโลยีการผลิตสัตว์</option>
-						<option>เทคโนโลยีอาหาร</option>
-						<option>อาชีวอนามัยและความปลอดภัย</option>
-						<option>อนามัยสิ่งแวดล้อม</option>
-						<option>แพทยศาสตร์</option>
-						<option>วิศวกรรมเกษตร</option>
-						<option>วิศวกรรมขนส่ง</option>
-						<option>วิศวกรรมคอมพิวเตอร์</option>
-						<option>วิศวกรรมเคมี</option>
-						<option>วิศวกรรมเครื่องกล</option>
-						<option>วิศวกรรมเซรามิก</option>
-						<option>วิศวกรรมโทรคมนาคม</option>
-						<option>วิศวกรรมพอลิเมอร์</option>
-						<option>วิศวกรรมไฟฟ้า</option>
-						<option>วิศวกรรมโยธา</option>
-						<option>วิศวกรรมโลหการ</option>
-						<option>วิศวกรรมสิ่งแวดล้อม</option>
-						<option>วิศวกรรมอุตสาหการ</option>
-						<option>เทคโนโลยีธรณี</option>
-						<option>วิศวกรรมอิเล็กทรอนิกส์ </option>
-						<option>วิศวกรรมการผลิต</option>
-						<option>วิศวกรรมยานยนต์</option>
-						<option>วิศวกรรมอากาศยาน</option>
-						<option>แมคคาทรอนิกส์</option>
-						</select>
-					<br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;">ที่อยู่: <br>
-					</td>
-					<td style="vertical-align: top;"><textarea cols="40" rows="3" name="address"></textarea><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top;"><br>
-					</td>
-					<td style="vertical-align: top;"><br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top;"><br>
-					</td>
-					<td style="vertical-align: top;"><input name="submit" value="สมัครสมาชิก" type="submit">&nbsp;&nbsp;&nbsp; <input
-		name="reset" value="ล้างฟอร์ม" type="reset"><br>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		</form>
-			
+				<table width="95%" border="1" cellpadding="1" cellspacing="0" >
+   				 <tr bgcolor="orange"><th>Username</th><th>Name</th><th>Email</th><th>Study</th><th>Address</th></tr>
+    				{.repeated section @}
+    
+    			<tr><td>{Usern|html}</td><td>{Name|html}</td><td>{Email|html}</td><td>{Study|html}</td><td>{Address|html}</td></tr>
+       			{.end}
+       			</table>
+				</center>
 	</td>
 	</td>
 </tr>

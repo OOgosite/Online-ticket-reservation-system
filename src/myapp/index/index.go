@@ -160,8 +160,9 @@ const mainPage = `<!DOCTYPE HTML>
 		<input name="password" size="15" type="password"><br>
 		<input value="login" type="submit"></form>
 		<br>
-		<div style="text-align: left;"><a href="/signin" target="_top">สมัครสมาชิก</a><br>
+		<div style="text-align: left;"><a href='/signin' target="_top">สมัครสมาชิก</a><br>
 		<a href="/forgetpass" target="_top">ลืมรหัสผ่าน</a><br>
+		<a href="/view" target="_top">รายชื่อสมาชิก</a>
 		<br>
 		</div>
 	</td>
