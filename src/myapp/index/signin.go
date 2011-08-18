@@ -45,7 +45,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 		}
 	
 	if g.Passwd == g.Repasswd && g.Usern != "" && g.Name != "" && g.Phone != "" && g.Email != "" {
-		datastore.Put(c, datastore.NewIncompleteKey("Member"), &g)
+		_, err := datastore.Put(c, datastore.NewIncompleteKey("Member"), &g)
+		
+		if err != nil {
+        	http.Error(w, err.String(), http.StatusInternalServerError)
+        return
+   		}
+    
 	} else {		
 		http.Redirect(w, r, "/signin", http.StatusFound)
 	}
@@ -69,16 +75,16 @@ const signIn = `<!DOCTYPE HTML>
 					<img style="width: 980px; height: 172px;" alt="" src="images/down_01.gif"></td>
 				</tr>
 				<tr>
-					<td style="vertical-align: top; height: 41px; width: 143px;">
-					<img onmouseout='src="images/down_02.gif"' style="width: 165px; height: 38px;"onmouseover='src="images/up_02.gif"' alt="" src="images/down_02.gif"></td>
+					<td style="vertical-align: top; height: 41px; width: 143px;"><a href='/'>
+					<img onmouseout='src="images/down_02.gif"' style="width: 165px; height: 38px;"onmouseover='src="images/up_02.gif"' alt="" src="images/down_02.gif"></a></td>
 					<td style="vertical-align: top; height: 41px; width: 148px;">
 					<img onmouseout='src="images/down_03.gif"' style="width: 234px; height: 38px;" onmouseover='src="images/up_03.gif"' alt="" src="images/down_03.gif"></td>
 					<td style="vertical-align: top; height: 41px; width: 69px;">
 					<img onmouseout='src="images/down_04.gif"' onmouseover='src="images/up_04.gif"' style="width: 151px; height: 38px;" alt="" src="images/down_04.gif"></td>
 					<td style="vertical-align: top; height: 41px; width: 503px;">
 					<img onmouseout='src="images/down_05.gif"' onmouseover='src="images/up_05.gif"' style="width: 229px; height: 38px;" alt="" src="images/down_05.gif"></td>
-					<td style="vertical-align: top; height: 41px; width: 42px;">
-					<img onmouseout='src="images/down_06.jpg"' onmouseover='src="images/up_06.jpg"' style="width: 201px; height: 38px;" alt="" src="images/down_06.jpg"></td>
+					<td style="vertical-align: top; height: 41px; width: 42px;"><a href='/about'>
+					<img onmouseout='src="images/down_06.jpg"' onmouseover='src="images/up_06.jpg"' style="width: 201px; height: 38px;" alt="" src="images/down_06.jpg"></a></td>
 				</tr>
 			</tbody>
 			</table>
@@ -93,7 +99,7 @@ const signIn = `<!DOCTYPE HTML>
 				<br>
 				</span>
 				<form action="/register" method="post">
-				<table style="text-align: left; width: 500px; height: 59px;" border="0" cellpadding="0" cellspacing="0">
+				<table style="text-align: left; width: 500px; height: 59px;" border="0" cellpadding="2" cellspacing="5">
 				<tbody>
 				<tr align="left">
 					<td colspan="2" rowspan="1" style="vertical-align: top;">กรุณากรอกข้อมูลที่เป็นจริง และครบถ้วน<br><br>
@@ -219,7 +225,7 @@ const signIn = `<!DOCTYPE HTML>
 	</td>
 	</tr>
 	<tr>
-	<td style="vertical-align: top; background-color: rgb(255, 164, 10);">หน้าแรก<br>
+	<td style="vertical-align: top; background-color: rgb(255, 164, 10);"><a href='/' target="_top">หน้าแรก</a><br>
 	</td>
 	</tr>
 	<tr>
@@ -234,7 +240,7 @@ const signIn = `<!DOCTYPE HTML>
 	</td>
 	</tr>
 	<tr>
-	<td style="vertical-align: top; background-color: rgb(255, 164, 10);">เกี่ยวกับเรา<br>
+	<td style="vertical-align: top; background-color: rgb(255, 164, 10);"><a href='/about' target="_top">เกี่ยวกับเรา</a><br>
 	</td>
 	</tr>
 	<tr>

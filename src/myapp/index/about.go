@@ -7,18 +7,18 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/", index)
+	http.HandleFunc("/about", about)
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, mainPage)
+func about(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprint(w, aboutPage)
 }
 
-const mainPage = `<!DOCTYPE HTML>
+const aboutPage = `<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		<title>ระบบจองตั๋วรถออนไลน์</title>
+		<title>เกี่ยวกับเรา</title>
 		<meta content="chatchai" name="author">
 		<meta content="ระบบจองตั๋วรถออนไลน์ มหาวิทยาลัยเทคโนโลยีสุรนารี"name="description">
 	</head>
@@ -51,104 +51,42 @@ const mainPage = `<!DOCTYPE HTML>
 				<img style="width: 200px; height: 30px;" alt="" src="images/login.jpg"><br>
 				</td>
 				<td colspan="1" rowspan="19" style="vertical-align: top; width: 849px; text-align: center;">
-				<h3><br>ยินดีต้อนรับเข้าสู่ระบบจองตั๋วรถออนไลน์<br></h3>
-				<h4>ระบบนี้เป็นการจำลองการจองตั๋วรถเมล์ภายในมหาวิทยาลัยเทคโนโลยีสุรนารี<br>
-				เพื่อเป็นต้นแบบในการนำไปประยุกต์ใช้งานต่อไป</h4>
 				<br>
 				<br>
-				<hr style="width: 90%; height: 2px;"><br>
-			<center>
-				<form action="/search" method="post">
-				<table style="text-align: left; width: 550px;" border="0" cellpadding="2" cellspacing="5">
+				<table style="text-align: left; width: 600px; height: 151px; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="5">
 					<tbody>
-					<tr>
-						<td colspan="2" rowspan="1" style="vertical-align: top; text-align: center;"><br>
-						<big style="font-weight: bold;">ค้นหาเที่ยวรถ</big><br>
-						<br>
-						</td>
+					<tr align="center">
+					<td style="vertical-align: top;">
+					<h2><span style="color: rgb(0, 0, 153);">เกี่ยวกับระบบจองตั๋วรถออนไลน์</span><br>
+					</h2>
+					</td>
 					</tr>
 					<tr>
-						<td style="vertical-align: top; text-align: right;"><span style="color: rgb(0, 0, 153);">จุดขึ้นรถ:</span> <br>
-						</td>
-						<td style="vertical-align: top;">
-						<select name="start">
-							<option value="">-เลือกจุดขึ้นรถ-</option>
-							<option>สถานีขนส่ง</option>
-							<option>อาคารบริหาร</option>
-							<option>หอพักสุรนิเวศ 15</option>
-							<option>หอพักสุรนิเวศ1-6</option>
-							<option>หอพักสุรนิเวศ16</option>
-							<option>โรงอาหารหอพัก</option>
-							<option>หอพักสุรนิเวศ13</option>
-							<option>หอพักสุรนิเวศ7-12</option>
-							<option>อาคารเรียนรวม1</option>
-							<option>อาคารเรียนรวม2</option>
-							<option>บรรณสาร</option>
-							<option>อาคารเครื่องมือ</option>
-							<option></option>
-						</select>
-						<br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;"><span style="color: rgb(0, 0, 153);">จุดลงรถ: </span><br>
-					</td>
-					<td style="vertical-align: top;">
-						<select name="stop">
-							<option value="">-เลือกจุดลงรถ-</option>
-							<option>สถานีขนส่ง</option>
-							<option>อาคารบริหาร</option>
-							<option>หอพักสุรนิเวศ 15</option>
-							<option>หอพักสุรนิเวศ1-6</option>
-							<option>หอพักสุรนิเวศ16</option>
-							<option>โรงอาหารหอพัก</option>
-							<option>หอพักสุรนิเวศ13</option>
-							<option>หอพักสุรนิเวศ7-12</option>
-							<option>อาคารเรียนรวม1</option>
-							<option>อาคารเรียนรวม2</option>
-							<option>บรรณสาร</option>
-							<option>อาคารเครื่องมือ</option>
-							<option></option>
-						</select>
-						<br>
-					</td>
-				</tr>
-				<tr>
-					<td style="vertical-align: top; text-align: right;"><span style="color: rgb(0, 0, 153);">วัน/เวลาที่เดินทาง: </span><br>
-					</td>
-					<td style="vertical-align: top;">
-						<select name="datetime">
-							<option value="">-เลือกวันที่เดินทาง-</option>
-							<option>วันจันทร์</option>
-							<option>วันอังคาร</option>
-							<option>วันพุธ</option>
-							<option>วันพฤหัสบดี</option>
-							<option>วันศุกร์</option>
-							<option>วันเสาร์</option>
-							<option>วันอาทิตย์</option>
-							<option></option>
-						</select>
-						<br>
+					<td style="vertical-align: top;">ระบบจองตั๋วรถออนไลน์
+		จัดทำขึ้นเพื่อใช้ในการศึกษาการเขียนโปรแกรมด้วยภาษา Go ของ Goole
+		สำหรับทำงานบน Google App Engine และการใช้งาน datastore
+		ซึ่งเป็นการศึกษาในรายวิชา 423412 ADVANCED TOPICS IN SYSTEM SOFTWARE
+		ภาคการศึกษาที่ 1/2554 มหาวิทยาลัยเทคโนโลยีสุรนารี
+		ระบบนี้จะเป็นการจำลองระบบการเดินรถภายในมหาวิทยาลัยเทคโนโลยีสุรนารี
+		ซึ่งจะมีบางฟังก์ชั่นเท่านั้นที่สามารถทำงานได้สมบูรณ์<br>
 					</td>
 				</tr>
 				<tr>
 					<td style="vertical-align: top;"><br>
 					</td>
-					<td style="vertical-align: top;"><br>
+				</tr>
+				<tr>
+					<td style="vertical-align: top;"><span style="color: rgb(0, 0, 153);">ผู้จัดทำ</span><br>
 					</td>
 				</tr>
 				<tr>
-					<td style="vertical-align: top;"><br>
-					</td>
-					<td style="vertical-align: top;"><input name="submit" value="ค้นหาเที่ยวรถ" type="submit"><br>
+					<td style="vertical-align: top;">นายชัชชัย บุญหลาย รหัส B512702 สาขาวิชาวิศวกรรมคอมพิวเตอร์<br>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		</form>
-	</center>
-	<br>
-	<hr style="width: 90%; height: 2px;"><br>
+		
+	
 	</td>
 	</td>
 </tr>

@@ -16,8 +16,17 @@ func view(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
     q := datastore.NewQuery("Member").Order("-Date").Limit(10)
     members := make([]Member, 0, 10)
-    q.GetAll(c, &members)
-    viewTemplate.Execute(w, members)
+   
+    _, err := q.GetAll(c, &members) 
+    if err != nil {
+        http.Error(w, err.String(), http.StatusInternalServerError)
+        return
+    }
+    
+    err2 := viewTemplate.Execute(w, members)
+    if err2 != nil {
+        http.Error(w, err.String(), http.StatusInternalServerError)
+    }
 }
 
 
@@ -40,16 +49,16 @@ const viewTemplateHTML = `<!DOCTYPE HTML>
 					<img style="width: 980px; height: 172px;" alt="" src="images/down_01.gif"></td>
 				</tr>
 				<tr>
-					<td style="vertical-align: top; height: 41px; width: 143px;">
-					<img onmouseout='src="images/down_02.gif"' style="width: 165px; height: 38px;"onmouseover='src="images/up_02.gif"' alt="" src="images/down_02.gif"></td>
+					<td style="vertical-align: top; height: 41px; width: 143px;"><a href='/'>
+					<img onmouseout='src="images/down_02.gif"' style="width: 165px; height: 38px;"onmouseover='src="images/up_02.gif"' alt="" src="images/down_02.gif"></a></td>
 					<td style="vertical-align: top; height: 41px; width: 148px;">
 					<img onmouseout='src="images/down_03.gif"' style="width: 234px; height: 38px;" onmouseover='src="images/up_03.gif"' alt="" src="images/down_03.gif"></td>
 					<td style="vertical-align: top; height: 41px; width: 69px;">
 					<img onmouseout='src="images/down_04.gif"' onmouseover='src="images/up_04.gif"' style="width: 151px; height: 38px;" alt="" src="images/down_04.gif"></td>
 					<td style="vertical-align: top; height: 41px; width: 503px;">
 					<img onmouseout='src="images/down_05.gif"' onmouseover='src="images/up_05.gif"' style="width: 229px; height: 38px;" alt="" src="images/down_05.gif"></td>
-					<td style="vertical-align: top; height: 41px; width: 42px;">
-					<img onmouseout='src="images/down_06.jpg"' onmouseover='src="images/up_06.jpg"' style="width: 201px; height: 38px;" alt="" src="images/down_06.jpg"></td>
+					<td style="vertical-align: top; height: 41px; width: 42px;"><a href='/about'>
+					<img onmouseout='src="images/down_06.jpg"' onmouseover='src="images/up_06.jpg"' style="width: 201px; height: 38px;" alt="" src="images/down_06.jpg"></a></td>
 				</tr>
 			</tbody>
 			</table>
@@ -94,7 +103,7 @@ const viewTemplateHTML = `<!DOCTYPE HTML>
 	</td>
 	</tr>
 	<tr>
-	<td style="vertical-align: top; background-color: rgb(255, 164, 10);">หน้าแรก<br>
+	<td style="vertical-align: top; background-color: rgb(255, 164, 10);"><a href='/' target="_top">หน้าแรก</a><br>
 	</td>
 	</tr>
 	<tr>
@@ -109,7 +118,7 @@ const viewTemplateHTML = `<!DOCTYPE HTML>
 	</td>
 	</tr>
 	<tr>
-	<td style="vertical-align: top; background-color: rgb(255, 164, 10);">เกี่ยวกับเรา<br>
+	<td style="vertical-align: top; background-color: rgb(255, 164, 10);"><a href='/about' target="_top">เกี่ยวกับเรา</a><br>
 	</td>
 	</tr>
 	<tr>
